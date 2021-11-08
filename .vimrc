@@ -16,7 +16,6 @@ set autoindent
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,chinese
 
-
 "Show matching bracets
 set showmatch
 
@@ -64,6 +63,7 @@ call vundle#begin()
 
 " 在这里面输入安装的插件
 " Vundle 本身就是一个插件
+Plugin 'dense-analysis/ale' 
 Plugin 'gmarik/Vundle.vim'
 Plugin 'Yggdroot/indentLine'
 Plugin 'Valloric/YouCompleteMe'
@@ -91,8 +91,8 @@ set completeopt=menu,menuone
 let g:ycm_add_preview_to_completeopt = 0
 let g:ycm_show_diagnostics_ui = 0
 let g:ycm_server_log_level = 'info'
-let g:ycm_error_symbol = '>>'
-let g:ycm_warning_symbol = '>*'
+"let g:ycm_error_symbol = '✗'
+"let g:ycm_warning_symbol = '⚡'
 let g:ycm_min_num_identifier_candidate_chars = 2
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_strings=1
@@ -110,6 +110,36 @@ let g:ycm_filetype_whitelist = {
 			\ "zsh":1,
 			\ "zimbu":1,
 			\ }
+" ale 代码检查工具配置
+
+"始终开启标志列
+let g:ale_sign_column_always = 0
+let g:ale_set_highlights = 0
+"自定义error和warning图标
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '⚡'
+"显示Linter名称,出错或警告等相关信息
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+"普通模式下，sp前往上一个错误或警告，sn前往下一个错误或警告
+nmap sp <Plug>(ale_previous_wrap)
+nmap sn <Plug>(ale_next_wrap)
+"<Leader>s触发/关闭语法检查
+nmap <Leader>s :ALEToggle<CR>
+"<Leader>d查看错误或警告的详细信息
+nmap <Leader>d :ALEDetail<CR>
+"文件内容发生变化时不进行检查
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+"打开文件时不进行检查
+let g:ale_lint_on_enter = 0
+"使用clang对c和c++进行语法检查，对python使用pylint进行语法检查
+let g:ale_linters = {
+\   'c++': ['clang'],
+\   'c': ['clang'],
+\   'python': ['pylint'],
+\}
 
 " 彩虹括号的相关配置
 let g:rainbow_active = 1
